@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0b1427" />
+<title>Position Size Calculator | ES & MES</title>
+<style>
+:root{--bg:#081225;--panel:#0d1a31;--panel2:#101f39;--line:#263d61;--text:#eef4ff;--muted:#9fb0ca;--green:#12d894;--green2:#087b60;--blue:#2787ff;--purple:#a56bff;--cyan:#59c9ff;--yellow:#ffd34f;--red:#ff7185;--shadow:0 18px 50px #0005}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#14284a 0%,transparent 45%),linear-gradient(135deg,#071225,#0c1930 55%,#101b34);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh;padding:26px}
+.wrap{max-width:1440px;margin:auto}.header{border:1px solid #29436c;background:#0b172bdf;border-radius:22px;padding:24px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:var(--shadow);margin-bottom:22px}.brand{display:flex;align-items:center;gap:18px}.logo{width:62px;height:62px;border-radius:17px;background:#063c39;color:var(--green);display:grid;place-items:center;font-size:34px;font-weight:900}.header h1{font-size:clamp(25px,3vw,38px);margin:0;letter-spacing:-1px}.header p{margin:5px 0 0;color:#b8c7df;font-size:15px}.pill{background:#064b3e;color:#72f2c6;padding:10px 16px;border-radius:999px;font-weight:800;white-space:nowrap}.layout{display:grid;grid-template-columns:minmax(300px,.78fr) minmax(0,1.5fr);gap:20px;align-items:start}.panel{background:linear-gradient(160deg,#0d1a31f5,#0a1629f5);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)}.panel h2{font-size:23px;margin:0 0 22px;display:flex;align-items:center;gap:10px}.section{margin:20px 0}.section-title{font-weight:800;margin-bottom:12px;color:#dbe7fb}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}.field label{font-size:13px;color:#c0cde1;font-weight:650}.field input,.field select{width:100%;min-width:0;background:#0a1528;border:1px solid #3a5277;border-radius:11px;padding:13px 14px;color:white;font-size:17px;outline:none}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2787ff22}.hint{font-size:11px;color:#8498b8;margin-top:-3px}.segmented{display:grid;grid-template-columns:repeat(3,1fr);background:#09152a;border:1px solid #344c70;border-radius:12px;padding:4px;gap:4px}.segmented button{border:0;background:transparent;color:#d9e4f6;padding:11px 6px;border-radius:9px;font-weight:800;cursor:pointer}.segmented button.active{background:linear-gradient(135deg,#258cff,#1467d8);color:#fff;box-shadow:0 5px 18px #1675e944}.divider{height:1px;background:#253957;margin:19px 0}.btn{width:100%;border:0;border-radius:12px;padding:16px;background:linear-gradient(100deg,#15d99a,#08b978);color:#04261e;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 9px 25px #08b9782a}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.small-note{font-size:11px;line-height:1.5;color:#8397b6;margin:12px 0 0}.results-top{border:1px solid #0dbd83;background:linear-gradient(110deg,#064d3b,#073b38 55%,#102e40);border-radius:17px;padding:20px 22px;margin-bottom:16px}.recommend-label{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#8cf1cb;font-weight:900}.recommend-title{font-size:clamp(23px,3vw,34px);font-weight:900;margin:5px 0}.recommend-sub{color:#c3e8dc;font-size:13px;line-height:1.5}.status{display:inline-block;padding:5px 9px;border-radius:7px;font-size:11px;font-weight:900;margin-top:8px;background:#0a7455;color:#b7ffe4}.status.warn{background:#604817;color:#ffe4a0}.status.bad{background:#602c3b;color:#ffc1cb}.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}.instrument{border:1px solid #277fe0;border-radius:16px;overflow:hidden;background:#0b182d}.instrument.mes{border-color:#8956db}.instrument-head{background:linear-gradient(100deg,#126edc,#1556b8);padding:13px 16px;text-align:center}.mes .instrument-head{background:linear-gradient(100deg,#7842d3,#5228a5)}.instrument-head h3{margin:0;font-size:23px}.instrument-head p{margin:3px 0 0;font-size:11px;color:#e0eaff}.instrument-body{padding:13px 15px}.metric{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #20334f;font-size:13px}.metric span{color:#bdcce1}.metric strong{text-align:right;font-variant-numeric:tabular-nums}.metric.emph{border-top:1px solid #398dd2;border-bottom:1px solid #398dd2;margin-top:3px;color:var(--cyan);font-size:15px;font-weight:900}.mes .metric.emph{color:#d1a3ff;border-color:#9660e6}.metric.emph span{color:inherit}.card-status{font-size:11px;font-weight:800;margin-top:12px;padding:8px;border-radius:8px;background:#142741;color:#b9cbe4;line-height:1.4}.card-status.good{background:#063e33;color:#9cf3d2}.card-status.bad{background:#422535;color:#ffc1cf}.insights{border:1px solid #7c8e55;border-radius:15px;padding:15px 17px;margin-top:15px;background:#111d30}.insights h3{color:var(--yellow);font-size:15px;margin:0 0 9px}.insights p{margin:6px 0;color:#cbd8ea;font-size:12px;line-height:1.5}.insights p:before{content:'✓';color:var(--green);font-weight:900;margin-right:9px}.empty{padding:16px;border:1px dashed #536b8c;border-radius:12px;color:#b6c7df;font-size:13px;line-height:1.6;margin-top:14px}.footer{text-align:center;color:#778ba9;font-size:11px;padding:20px 8px}.hidden{display:none!important}.error{color:#ff9aa9;font-size:12px;margin:10px 0 0;min-height:16px}.detail{font-size:11px;color:#92a6c5;margin-top:8px;line-height:1.5}.tag{font-size:10px;padding:3px 7px;border-radius:5px;background:#1c3452;color:#c7d9f3;margin-left:5px}
+@media(max-width:900px){body{padding:14px}.layout{grid-template-columns:1fr}.header{padding:18px}.panel{padding:19px}}
+@media(max-width:560px){.header{align-items:flex-start}.logo{width:48px;height:48px;font-size:27px}.pill{font-size:11px;padding:8px 10px}.field-grid,.cards{grid-template-columns:1fr}.panel{padding:16px}.header p{font-size:12px}.recommend-title{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="header">
+    <div class="brand"><div class="logo">↗</div><div><h1>Position Size Calculator</h1><p>Find the right ES or MES quantity for today's risk and reward</p></div></div>
+    <div class="pill">Tradeify · Futures</div>
+  </header>
+  <main class="layout">
+    <section class="panel">
+      <h2>⚙️ Your trade setup</h2>
+      <div class="section">
+        <div class="section-title">Instrument selection</div>
+        <div class="segmented" role="group" aria-label="Instrument selection">
+          <button type="button" class="active" data-mode="auto">✦ Auto</button><button type="button" data-mode="ES">ES</button><button type="button" data-mode="MES">MES</button>
+        </div>
+        <div class="hint" style="margin-top:8px">Auto compares ES and MES. Manual mode calculates only the instrument you select.</div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Today's price distances</div>
+      <div class="field-grid">
+        <div class="field"><label for="sl">Stop-loss (points)</label><input id="sl" type="number" min="0.01" step="0.01" value="4.00"><div class="hint">Entry to stop-loss</div></div>
+        <div class="field"><label for="tp">Take-profit (points)</label><input id="tp" type="number" min="0.01" step="0.01" value="4.00"><div class="hint">Entry to target</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Desired NET profit</div>
+      <div class="field-grid">
+        <div class="field"><label for="minProfit">Minimum ($)</label><input id="minProfit" type="number" min="0.01" step="0.01" value="160"></div>
+        <div class="field"><label for="maxProfit">Maximum ($)</label><input id="maxProfit" type="number" min="0.01" step="0.01" value="200"></div>
+      </div>
+      <div class="field"><label for="maxRisk">Maximum NET risk ($) <span class="tag">Optional</span></label><input id="maxRisk" type="number" min="0" step="0.01" placeholder="Leave blank for no risk cap"><div class="hint">Includes the round-trip trading cost.</div></div>
+      <div class="divider"></div>
+      <div class="section-title">Hardcoded Tradeify round-trip costs</div>
+      <div class="field-grid">
+        <div class="field"><label>ES · $50 / point</label><input value="$5.76 per contract" disabled></div>
+        <div class="field"><label>MES · $5 / point</label><input value="$1.82 per contract" disabled></div>
+      </div>
+      <button class="btn" id="calculate">▦ &nbsp; Calculate position</button>
+      <div class="error" id="error" role="alert"></div>
+      <p class="small-note">Costs are treated as the total round-trip cost per contract and are included once in the net reward and once in the net risk. Slippage is not included.</p>
+    </section>
+
+    <section class="panel" aria-live="polite">
+      <div class="results-top" id="recommendation">
+        <div class="recommend-label">Your recommendation</div>
+        <div class="recommend-title" id="recommendTitle">Enter today's setup</div>
+        <div class="recommend-sub" id="recommendSub">Your ES and MES position sizes will appear here after calculation.</div>
+        <span class="status" id="recommendStatus">Ready to calculate</span>
+      </div>
+      <div class="cards">
+        <article class="instrument" id="esCard">
+          <div class="instrument-head"><h3>ES</h3><p>E-mini S&amp;P 500 · $50 per point</p></div>
+          <div class="instrument-body" id="esBody"><div class="empty">Enter your stop-loss and target distances, then calculate.</div></div>
+        </article>
+        <article class="instrument mes" id="mesCard">
+          <div class="instrument-head"><h3>MES</h3><p>Micro E-mini S&amp;P 500 · $5 per point</p></div>
+          <div class="instrument-body" id="mesBody"><div class="empty">Enter your stop-loss and target distances, then calculate.</div></div>
+        </article>
+      </div>
+      <div class="insights"><h3>💡 Calculation notes</h3><div id="insights"><p>Enter your trade distances and profit range to compare the two instruments.</p><p>The calculator will never combine ES and MES contracts.</p></div></div>
+      <div class="detail">Selection rule: among valid positions, recommend the instrument with the lowest total round-trip cost. If costs tie, choose the result closest to the midpoint of your net-profit target. A position is valid only when net reward is within your range and, if entered, net risk does not exceed your limit.</div>
+    </section>
+  </main>
+  <div class="footer">Position Size Calculator · ES / MES · Tradeify cost assumptions · For planning purposes only</div>
+</div>
+<script>
+(() => {
+  const specs = {
+    ES: {pointValue: 50, fee: 5.76, label: 'E-mini S&P 500'},
+    MES: {pointValue: 5, fee: 1.82, label: 'Micro E-mini S&P 500'}
+  };
+  let mode = 'auto';
+  const $ = id => document.getElementById(id);
+  document.querySelectorAll('[data-mode]').forEach(button => button.addEventListener('click', () => {
+    mode = button.dataset.mode;
+    document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('active', b === button));
+    calculate();
+  }));
+  const money = n => n.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2});
+  const num = n => n.toLocaleString('en-US',{maximumFractionDigits:2});
+  function getCandidate(name, sl, tp, minNet, maxNet, maxRisk) {
+    const s = specs[name];
+    const perContractNetReward = tp * s.pointValue - s.fee;
+    const perContractNetRisk = sl * s.pointValue + s.fee;
+    if (perContractNetReward <= 0) return {name, valid:[], below:null, above:null, reason:'Target distance does not cover the round-trip cost.'};
+    const candidates = [];
+    // Enumerate whole-contract quantities. A practical cap avoids unreasonable suggested size.
+    for (let q=1; q<=10000; q++) {
+      const grossReward = tp * s.pointValue * q;
+      const grossRisk = sl * s.pointValue * q;
+      const fees = s.fee * q;
+      const netReward = grossReward - fees;
+      const netRisk = grossRisk + fees;
+      candidates.push({name,q,grossReward,grossRisk,fees,netReward,netRisk});
+      if (netReward > maxNet && q > 1) break;
+    }
+    const valid = candidates.filter(c => c.netReward + 1e-9 >= minNet && c.netReward - 1e-9 <= maxNet && (maxRisk === null || c.netRisk <= maxRisk + 1e-9));
+    const belowList = candidates.filter(c => c.netReward < minNet);
+    const aboveList = candidates.filter(c => c.netReward > maxNet);
+    const below = belowList.length ? belowList[belowList.length-1] : null;
+    const above = aboveList.length ? aboveList[0] : null;
+    return {name, valid, below, above, reason: valid.length ? '' : (maxRisk !== null && candidates.some(c=>c.netReward>=minNet && c.netReward<=maxNet) ? 'A position reaches the profit target, but exceeds your maximum net-risk limit.' : 'No whole-contract quantity fits the selected net-profit range.')};
+  }
+  function metric(label, value, emph=false) {return `<div class="metric ${emph?'emph':''}"><span>${label}</span><strong>${value}</strong></div>`;}
+  function candidateMarkup(result) {
+    const best = result.valid.length ? result.valid.reduce((a,b)=> b.fees<a.fees-1e-9 || (Math.abs(b.fees-a.fees)<1e-9 && Math.abs(b.netReward-(minVal()+maxVal())/2)<Math.abs(a.netReward-(minVal()+maxVal())/2)) ? b : a) : null;
+    if (best) return `<div class="metric"><span>Quantity</span><strong>${best.q} contract${best.q===1?'':'s'}</strong></div>${metric('Gross reward',money(best.grossReward))}${metric('Round-trip fees',money(best.fees))}${metric('NET REWARD',money(best.netReward),true)}${metric('Gross risk',money(best.grossRisk))}${metric('Round-trip fees',money(best.fees))}${metric('NET RISK',money(best.netRisk),true)}<div class="card-status good">✓ Meets your net-profit target${maxRiskValue()===null?' and available risk rules.':' and maximum net-risk limit.'}</div>`;
+    let html = `<div class="card-status bad">${result.reason}</div>`;
+    if (result.below) html += `<div class="metric"><span>Closest below target</span><strong>${result.below.q} × ${money(result.below.netReward)}</strong></div>`;
+    if (result.above) html += `<div class="metric"><span>Closest above target</span><strong>${result.above.q} × ${money(result.above.netReward)}</strong></div>`;
+    if (!result.below && !result.above) html += `<div class="metric"><span>Available quantities</span><strong>No valid candidate</strong></div>`;
+    return html;
+  }
+  function minVal(){return Number($('minProfit').value)} function maxVal(){return Number($('maxProfit').value)}
+  function maxRiskValue(){const v=$('maxRisk').value.trim();return v===''?null:Number(v)}
+  function calculate() {
+    const sl=Number($('sl').value), tp=Number($('tp').value), minNet=minVal(), maxNet=maxVal(), maxRisk=maxRiskValue();
+    $('error').textContent='';
+    if (![sl,tp,minNet,maxNet].every(Number.isFinite) || sl<=0 || tp<=0 || minNet<=0 || maxNet<minNet || (maxRisk!==null && (!Number.isFinite(maxRisk)||maxRisk<=0))) {
+      $('error').textContent='Please enter positive stop-loss and take-profit distances, a valid profit range, and a positive maximum risk if used.';
+      return;
+    }
+    const names = mode==='auto' ? ['ES','MES'] : [mode];
+    const results = names.map(n=>getCandidate(n,sl,tp,minNet,maxNet,maxRisk));
+    const es = names.includes('ES') ? results.find(r=>r.name==='ES') : null;
+    const mes = names.includes('MES') ? results.find(r=>r.name==='MES') : null;
+    $('esBody').innerHTML = es ? candidateMarkup(es) : `<div class="empty">ES is not included in this calculation. Select Auto or ES to evaluate it.</div>`;
+    $('mesBody').innerHTML = mes ? candidateMarkup(mes) : `<div class="empty">MES is not included in this calculation. Select Auto or MES to evaluate it.</div>`;
+    const valid = results.flatMap(r=>r.valid.map(c=>({...c})));
+    if (valid.length) {
+      const best = valid.reduce((a,b)=> b.fees<a.fees-1e-9 || (Math.abs(b.fees-a.fees)<1e-9 && Math.abs(b.netReward-(minNet+maxNet)/2)<Math.abs(a.netReward-(minNet+maxNet)/2)) ? b : a);
+      $('recommendTitle').textContent = `${best.q} ${best.name} contract${best.q===1?'':'s'}`;
+      $('recommendSub').textContent = `${specs[best.name].label}. Net reward ${money(best.netReward)}, net risk ${money(best.netRisk)}, total round-trip fees ${money(best.fees)}.`;
+      $('recommendStatus').textContent = mode==='auto' ? 'Lowest-cost valid choice' : 'Valid for selected instrument';
+      $('recommendStatus').className='status';
+      $('insights').innerHTML = `<p>${best.name} is the lowest-commission valid choice among the instruments evaluated.</p><p>Estimated net reward is ${money(best.netReward)} after ${money(best.fees)} in round-trip fees.</p><p>Estimated net risk is ${money(best.netRisk)} including round-trip fees. Slippage is not included.</p>`;
+    } else {
+      $('recommendTitle').textContent='No qualifying position';
+      $('recommendSub').textContent=mode==='auto'?'Neither ES nor MES meets all your target and risk conditions. Review the closest options shown below.':`${mode} cannot meet all your target and risk conditions with whole contracts.`;
+      $('recommendStatus').textContent='No valid size found'; $('recommendStatus').className='status bad';
+      const closest = results.map(r=>({name:r.name,c:r.above||r.below})).filter(x=>x.c).sort((a,b)=>Math.abs(a.c.netReward-(minNet+maxNet)/2)-Math.abs(b.c.netReward-(minNet+maxNet)/2));
+      $('insights').innerHTML = `<p>No evaluated position satisfies every condition. Do not force a trade just to fit the target.</p>${closest.length?`<p>Closest candidate: ${closest[0].c.q} ${closest[0].name}, net reward ${money(closest[0].c.netReward)}, net risk ${money(closest[0].c.netRisk)}.</p>`:''}<p>Try adjusting the target range or today's stop-loss / take-profit distances. The calculator uses whole contracts only.</p>`;
+    }
+  }
+  $('calculate').addEventListener('click',calculate);
+  ['sl','tp','minProfit','maxProfit','maxRisk'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')calculate()}));
+  calculate();
+})();
+</script>
+</body>
+</html>
